@@ -15,7 +15,7 @@ import com.doyoon.android.fastcampusandroid.R;
 * 3. setOnclickListenr 함수에 익명 객체로 전달(익명 객체는 식별자가 없는 것)
 *    // ex) btn.setOnClickListenr(new View.OnClickListener()){}
 */
-public class SummaryActivity extends AppCompatActivity implements View.OnClickListener{
+public class ListenerExample extends AppCompatActivity implements View.OnClickListener{
 
     private TextView tv;
     private Button btn;

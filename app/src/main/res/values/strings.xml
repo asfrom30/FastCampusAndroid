@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">FastCampusAndroid</string>
+
+    <!-- word_  -->
+    <!-- HTML 보다 쉬운게 XML, HTML 코드나 태그를 공부하는게 좋다.  -->
+    <!-- 3개 국어 앱을 만들때는 국가별로 .xml 파일을 만들어서 스트링만 따로 불러오면 된다. -->
+    <string name="word_dog">개</string>
+    <string name="word_pig">돼지</string>
+    <string name="word_horse">말</string>
+
+    <string name="radio_red">빨강</string>
+    <string name="radio_blue">파랑</string>
+    <string name="radio_green">초록</string>
+
 </resources>
