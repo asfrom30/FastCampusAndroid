@@ -23,6 +23,7 @@ public class Summary {
     // Contraints vs Reliatve Layout : Constraints는 희소행렬을 사용해서 조금 더 빠르다고 한다.
     // Margin(Web으로 이해하자면 해당 Div와 나를 감싸고 있는 Contianer와의 관계이다.)
     // Padding(Web으로 이해하자면 해당 Div와 그 안에 있는 다른 elemr과의 관계이다.)
+    // .xml파일에서 앞쪽에 작성된 코드가 먼저 그려져서 UI에서 가장 아래쪽에 쌓인다.
 
     /* Usage */
     //    Intent intent = new Intent(this, MainActivity.class);
@@ -31,7 +32,18 @@ public class Summary {
     /* Font */
     // Sp = Scaled
     // Dp = not Scaled
+    // Dp <-> px 변환하는 코드를 다운받아서 사용할것.
 
+    // .setText() 에서 정수만 들어가면 error가 난다. (구글 설계 미스 다형성을 잘못 형성한 예, int와 resource를 받는다.)
+
+    // 소스코드를 찾아 들어갈때는 getText -> mText -> 초기화 하는 부분을 찾으면 초기값이 null인지 ""인지 알 수있다.
+    // 그래서 getText에서 아무것도 입력되지 않았을때 ""이 반환되는지 null이 반환되는지 알 수 있다.
+
+    // Javascript의 중요성
+
+    // 불필요한 것은 입력에서 막으면 편하다. 이건 PLC랑 똑같네 아에 입력이 안되게끔 하면 로직단에서 처리가 간편해진다.
+
+    // 컬렉션이 느린 것은 맞으나, 객체지향에서는 배열을 직접 INDEX로 접근하는 것을 지양한다. 오히려 컬렉션을 사용.
 
 
 }

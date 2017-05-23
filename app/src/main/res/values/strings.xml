@@ -12,4 +12,23 @@
     <string name="radio_blue">파랑</string>
     <string name="radio_green">초록</string>
 
+    <string name="btn_number_1">1</string>
+    <string name="btn_number_2">2</string>
+    <string name="btn_number_3">3</string>
+    <string name="btn_number_4">4</string>
+    <string name="btn_number_5">5</string>
+    <string name="btn_number_6">6</string>
+    <string name="btn_number_7">7</string>
+    <string name="btn_number_8">8</string>
+    <string name="btn_number_9">9</string>
+    <string name="btn_number_0">0</string>
+
+    <string name="btn_add">+</string>
+    <string name="btn_sub">-</string>
+    <string name="btn_multi">*</string>
+    <string name="btn_div">/</string>
+
+    <string name="btn_clear">clear</string>
+    <string name="btn_equal">=</string>
+
 </resources>
