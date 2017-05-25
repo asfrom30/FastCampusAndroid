@@ -50,8 +50,9 @@
         <activity android:name=".week2.lecture.AdapterBasic.GridActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.RecyclerActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.DetailActivity" />
-        <activity android:name=".week2.lecture.AdapterBasic.DyActivity" />
-        <activity android:name=".week2.lecture.AdapterBasic.CustomListActivity"></activity>
+        <activity android:name=".week2.lecture.AdapterBasic.CustomListActivity" />
+        <activity android:name=".week2.lecture.AdapterBasic.CustomDetailActivity" />
+
     </application>
 
 </manifest>
