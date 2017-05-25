@@ -52,7 +52,29 @@
         <activity android:name=".week2.lecture.AdapterBasic.DetailActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.CustomListActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.CustomDetailActivity" />
+        <activity android:name=".week2.lecture.RecyclerView.RecylcerActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week2.lecture.IntentBasic.IntentBasicActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week2.lecture.IntentBasic.IntentActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week2.lecture.IntentBasic.GeneralActivity" />
+        <activity android:name=".week2.lecture.IntentBasic.TransparentActivity"
+            android:theme="@style/Theme.AppCompat.Translucent">
+        </activity>
     </application>
 
 </manifest>
