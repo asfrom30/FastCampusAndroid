@@ -29,22 +29,56 @@ Study and Organize about Android in FastCampus
 * Null Handling(**If statement** vs **Try Catch**)
 
     Most of case, it's better to use **if statement** for **null handling**, because sometimes **try catch statement** makes system slow
-    So, above code is better
-    *
-        
+    
+            // Better
             Bundle bundle = getIntent().getExtras();
             if (bundle == null) {
                 return;
             }
-    *
-    
+            // Not recommended
             Bundle bundle = getIntent().getExtras();
             try {
                 bundle.getString(/*key*/);           
             } catch (NullPointerException e){
                 
             }
-### Get Result from Next Activity using Intent
+
+* Decide which function you use
+
+    Look this code. When we get the value from `Bundle`, We use this code
+    
+            Bundle bundle = getIntent().getExtras();
+            if (bundle == null) {
+                return;
+            }
+            /* Bundle이 Null이면 getString()이라는 함수가 없다. */
+            String value = bundle.getString("key");
+
+    But we know another function 
+
+            getIntent().getStringExtra("key");
+    
+    So, second code is look like easier to use. but sometimes we need first code.
+    If we need so many values which is brought from values. In second code case, despite of `bundle` is null, they run all of `getStringExtra()`
+    but first code, they don't need to every run by checking `bundle` is null
+    
+        //better
+        Bundle bundle = getIntent().getExtras();
+        if (bundle == null) {
+            return;
+        }
+        String value1 = bundle.getString("key1");
+        String value2 = bundle.getString("key2");
+        String value3 = bundle.getString("key3");
+        String value4 = bundle.getString("key4");
+        //Not recommended
+        String value1= getIntent().getStringExtra("key1");
+        String value2= getIntent().getStringExtra("key2");
+        String value3= getIntent().getStringExtra("key3");
+        String value4= getIntent().getStringExtra("key4");
+        
+### Get Result from Next Activity using Intent 
+[source code]
 
 + Present Activity 
 
@@ -117,6 +151,7 @@ we called that `SharedPreference`
   
   
 ### WebView
+[source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/webview/WebViewMain.java)
 
 If you want to use `WebView`, You need resource permission. It's different form **Runtime Permission**
 > Note : You need to add this code to **manifest file** to obtain permission.
