@@ -72,7 +72,6 @@ class CustomAdapter extends BaseAdapter {
     public CustomAdapter(ArrayList<Data> datas, Context context){
         this.datas = datas;
         this.context = context;
-        this.context = context;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);  // system 서비스 안에는 다양한 것이 포함 되어 있으므로 형변환 해서 사용한다.
 
     }
