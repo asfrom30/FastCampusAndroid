@@ -155,7 +155,7 @@ we called that `SharedPreference`
 ### WebView
 [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/webview/WebViewMain.java)
 
-If you want to use `WebView`, You need resource permission. It's different form **Runtime Permission**
+If you want to use `WebView`, You need **resource permission**. It's different form **Runtime Permission**
 > Note : You need to add this code to **manifest file** to obtain permission.
 >```
 >  <uses-permission android:name="android.permission.INTERNET" />
