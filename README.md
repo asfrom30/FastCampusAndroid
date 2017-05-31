@@ -82,7 +82,8 @@ Study and Organize about Android in FastCampus
         
 ### Get Result from Next Activity using Intent 
 [present activity](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlMain.java)
-[nex activity](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlSub.java)
+
+[next activity](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlSub.java)
 + Present Activity 
 
     + Using `startActivityForResult()`, not Using `startActivity()`
