@@ -1,5 +1,27 @@
 # FastCampusAndroid
-FastCampus에서 배운내용을 정리합니다.
+Study and Organize about Android in FastCampus
+
+## week1
+
+## Week2
+### 
+### WebView
+If you want to use **WebView**, You need resource permission. It's different form **Runtime Permission**
+> Note : You need to add this code to **manifest file** to obtain permission.
+> ```
+>  <uses-permission android:name="android.permission.INTERNET" />
+>```
+```java
+/* Dependency Injection */
+webView = (WebView) findViewById(R.id.webview);
+
+/* Create Client */
+webView.setWebViewClient(new WebViewClient());
+webView.setWebChromeClient(new WebChromeClient());
+
+/* JavaScript Enable */
+webView.getSettings().setJavaScriptEnabled(true);
+```
 
 ## startActivityForResult -[전체보기](https://github.com/asfrom30/FastCampusAndroid/tree/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week2)
 

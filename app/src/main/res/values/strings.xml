@@ -31,4 +31,9 @@
     <string name="btn_clear">clear</string>
     <string name="btn_equal">=</string>
 
+    <string name="btn_prev"> &lt; </string> <!-- less than -->
+    <string name="btn_next"> &gt; </string> <!-- greater than -->
+
+
+
 </resources>
