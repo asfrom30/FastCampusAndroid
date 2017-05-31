@@ -36,6 +36,7 @@ Study and Organize about Android in FastCampus
             if (bundle == null) {
                 return;
             }
+ 
             // Not recommended
             Bundle bundle = getIntent().getExtras();
             try {
@@ -72,6 +73,7 @@ Study and Organize about Android in FastCampus
         String value2 = bundle.getString("key2");
         String value3 = bundle.getString("key3");
         String value4 = bundle.getString("key4");
+ 
         //Not recommended
         String value1= getIntent().getStringExtra("key1");
         String value2= getIntent().getStringExtra("key2");
@@ -137,12 +139,14 @@ we called that `SharedPreference`
         this.editPassword.setText(password);
 
     }
+    
     //Remove Preference
     private void removePreference(String key){
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(key);
         editor.commit();
     }
+    
     //Remove All Preference
     private void removeAllPreferences(){
         SharedPreferences.Editor editor = sharedPreferences.edit();
