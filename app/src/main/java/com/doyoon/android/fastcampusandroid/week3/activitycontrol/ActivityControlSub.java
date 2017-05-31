@@ -15,6 +15,7 @@ public class ActivityControlSub extends AppCompatActivity {
     private EditText inputText;
     private TextView outputText;
     private Button returnBtn;
+    private Button returnBtn1;
     private String myValue;
 
     @Override
@@ -24,19 +25,7 @@ public class ActivityControlSub extends AppCompatActivity {
 
         outputText = (TextView) findViewById(R.id.control_Sub_tv_result);
         inputText = (EditText) findViewById(R.id.controlSub_editText_input);
-        /* 왜 변수명이 있으면 안되지? */
-//        returnBtn = ((Button) findViewById(R.id.controlSub_btn_return)).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                int num1 = Integer.parseInt(myValue);
-//                int num2 = Integer.parseInt(inputText.getText().toString());
-//
-//                int result = num1 * num2;
-//
-//                setResult(RESULT_OK);
-//
-//            }
-//        });
+
         ((Button) findViewById(R.id.controlSub_btn_return)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,18 +52,8 @@ public class ActivityControlSub extends AppCompatActivity {
 
         myValue = bundle.getString("myKey");
 
-
-
-
-
-
-
         /* 안에 코드를 봐라 Bundle이 없으면 null */
         getIntent().getStringExtra("key");
-
-
-
-
 
         /* 이렇게하면 필요업는 조건문이나 변수를 10번 담아야 한다. */
         /* 이럴때는 그냥 bundle을 먼저 null 처리를 하면 뒤에 getString을 할 필요가 없다. */

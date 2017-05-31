@@ -24,10 +24,16 @@ public class PropertyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_property);
 
+        /* Transaction */
+        // Data를 처리하는 하나의 단위를 트랜잭션이라고 한다.
+        // ABCDEF를 처리해서 데이터를 저장한다고 하면 중간에 오류가 난다면 (데이터 처리 태스크)
+        // 다시 원복을 시키는것
+        // 읽기에는 트랜잭션이라는 개념이 없고, 수정 삭제 삽입에만 있다.
+        // 그래서 Read는 Editor를 꺼내지 않는다.
+
         /* XML HTML Txt는 매직넘버가 없다. 그냥 구조만 정의해둔것.. */
         sharedPreferences = this.getSharedPreferences("settings", MODE_PRIVATE); // 파일명으로 Properties 생성
         preference = new Preference(this); // Activity 이름으로 생성(지금은 거의 사용하지 않는다.)
-
 
         /* 이 코드가 너무 길어서 의존성 주입툴이 나온 것이다. */
         /* 코틀린이나 안드로이드 3.0으로가면 의존성 주입을 툴에서 해준다. */
@@ -65,20 +71,10 @@ public class PropertyActivity extends AppCompatActivity {
     public void savePref(String key, String value) {
         // 1. Get Editor
         SharedPreferences.Editor editor = sharedPreferences.edit();
-
         // 2. editor를 통해서 키 값을 저장
         editor.putString(key, value);
-
         // 3. editor 커밋
         editor.commit();
-
-        /* Transaction */
-        // Data를 처리하는 하나의 단위를 트랜잭션이라고 한다.
-        // ABCDEF를 처리해서 데이터를 저장한다고 하면 중간에 오류가 난다면 (데이터 처리 태스크)
-        // 다시 원복을 시키는것
-        // 읽기에는 트랜잭션이라는 개념이 없고, 수정 삭제 삽입에만 있다.
-        // 그래서 Read는 Editor를 꺼내지 않는다.
-
     }
 
     // 삭제하기
