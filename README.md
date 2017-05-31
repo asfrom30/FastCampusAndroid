@@ -1,7 +1,7 @@
 # FastCampusAndroid
 FastCampus에서 배운내용을 정리합니다.
 
-## startActivityForResult
+## startActivityForResult -[전체보기](https://github.com/asfrom30/FastCampusAndroid/tree/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week2)
 
 이 함수로 Activity를 실행하면 실행된 Activity가 종료되면서 아래의 onActivityResult 함수를 호출해준다. 
 '''java
