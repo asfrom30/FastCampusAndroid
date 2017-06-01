@@ -6,7 +6,7 @@ Study and Organize about Android in FastCampus
 ## Week2
 
 ## Week3
-### Tip
+### -. Tip
         
 * Transaction
 
@@ -80,10 +80,11 @@ Study and Organize about Android in FastCampus
         String value3= getIntent().getStringExtra("key3");
         String value4= getIntent().getStringExtra("key4");
         
-### Get Result from Next Activity using Intent 
-[present activity](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlMain.java)
++ Get Result from Next Activity using Intent 
 
-[next activity](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlSub.java)
+Present Activity[source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlMain.java)
+
+Next Activity [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlSub.java)
 + Present Activity 
 
     + Using `startActivityForResult()`, not Using `startActivity()`
@@ -117,7 +118,7 @@ Study and Organize about Android in FastCampus
             setResult(RESULT_OK, intent);
             finish();
 
-### Properties
+### -. Properties
 [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/property/PropertyActivity.java)
 Actually each `Activity` can create each **Preference** but nowadays It's common to use only one **perference file** in the application.
 we called that `SharedPreference`
@@ -157,7 +158,7 @@ we called that `SharedPreference`
 
   
   
-### WebView
+### -. WebView
 [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/webview/WebViewMain.java)
 
 If you want to use `WebView`, You need **resource permission**. It's different form **Runtime Permission**
@@ -176,3 +177,73 @@ webView.setWebChromeClient(new WebChromeClient());
 /* JavaScript Enable */
 webView.getSettings().setJavaScriptEnabled(true);
 ```
+
+### -. Runtime Permission 
+Using **Contacts Permission**
+* **Manifest File**
+    > Add below code
+    ```
+    <uses-permission android:name="android.permission.CAMERA"/>
+    ```
+    
+* `Present Activity`
+    > If the version is corresponded, check permission. and then if don't have permission, request permission to User
+      If have permission execution.
+    ```java
+    /* Version Compatibilty Check statement */
+    // Bring present android version and do if version is above the Mashmallow
+    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // After Mashmallow version, Write Initial is ok
+        boolean hasPermission = PermissionUtil.hasPermissionAndRequestIfNot(this, Manifest.permission.READ_CONTACTS, REQ_PERMISSION);
+        if(hasPermission){
+            run();
+        } else {
+            // Nothing to do...
+        }
+    } else {
+        run();
+    }
+    ```
+
+* `PermissionUtil Class`
+    > `PermissionUtil.hasPermissionAndRequestIfNot()` method needs annotation `@TargetApi(/* Version */)`
+It means that function can execute above **That Android Version**
+    ```java
+    public class PermissionUtil {
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        public static boolean hasPermissionAndRequestIfNot(Activity activity, String permission, int requestCode) {
+            Context context = activity.getBaseContext();
+    
+            if(context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED){
+                return true;
+            } else {
+                /* If don't have permmsion, request permission */
+                String permissions[] = {Manifest.permission.READ_CONTACTS};
+                activity.requestPermissions(permissions, requestCode); // -> 권한을 요구하는 팝업이 사용자 화면에 요청된다.
+                return false;
+            }
+        }
+    }
+    ```
+
+* again `Present Activity`
+    > You need to override `onRequestPermissionsResult()` in the activity, This is same as **Intent For result**,
+      After `activity.requestPErmission(permission, requestCode)` is called, The code which is overrided executes.
+    ```
+      @Override
+      public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+          super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+          if(requestCode == REQ_PERMISSION){
+              // User accept give permission
+              if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                  run();
+              // User deny give permission
+              } else {
+                  cancle();
+              }
+          }
+      }
+      ```
+      
+
+
+
