@@ -120,6 +120,7 @@ Next Activity [source code](https://github.com/asfrom30/FastCampusAndroid/blob/m
 
 ### -. Properties
 [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/property/PropertyActivity.java)
+
 Actually each `Activity` can create each **Preference** but nowadays It's common to use only one **perference file** in the application.
 we called that `SharedPreference`
 
@@ -218,7 +219,8 @@ It means that function can execute above **That Android Version**
             } else {
                 /* If don't have permmsion, request permission */
                 String permissions[] = {Manifest.permission.READ_CONTACTS};
-                activity.requestPermissions(permissions, requestCode); // -> 권한을 요구하는 팝업이 사용자 화면에 요청된다.
+                // Request Permission Pop-up appear
+                activity.requestPermissions(permissions, requestCode);
                 return false;
             }
         }
@@ -229,21 +231,20 @@ It means that function can execute above **That Android Version**
     > You need to override `onRequestPermissionsResult()` in the activity, This is same as **Intent For result**,
       After `activity.requestPErmission(permission, requestCode)` is called, The code which is overrided executes.
     ```
-      @Override
-      public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-          super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-          if(requestCode == REQ_PERMISSION){
-              // User accept give permission
-              if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                  run();
-              // User deny give permission
-              } else {
-                  cancle();
-              }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+      super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+      if(requestCode == REQ_PERMISSION){
+          // User accept give permission
+          if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+              run();
+          // User deny give permission
+          } else {
+              cancle();
           }
       }
-      ```
-      
+    }
+    ```
 
 
 
