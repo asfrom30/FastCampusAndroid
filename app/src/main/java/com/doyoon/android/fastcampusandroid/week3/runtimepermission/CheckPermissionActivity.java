@@ -26,7 +26,8 @@ public class CheckPermissionActivity extends AppCompatActivity {
         /* 버전 호환성 체크 */
         // 설치 안드로이드폰의 api level 가져오기, // api level이 23이상일 경우만 실행
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // 마시멜로우 이상이면 이니셜만 써도 된다. LOLIPOP이면 .LOLIPOP
-            boolean hasPermission = PermissionUtil.hasPermissionAndRequestIfNot(this, Manifest.permission.READ_CONTACTS, REQ_PERMISSION);
+            String[] permissions = {Manifest.permission.READ_CONTACTS};
+            boolean hasPermission = PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, REQ_PERMISSION);
             if(hasPermission){
                 run();
             } else {

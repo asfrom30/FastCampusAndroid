@@ -181,6 +181,7 @@ webView.getSettings().setJavaScriptEnabled(true);
 
 ### -. Runtime Permission 
 Using **Contacts Permission**
+[source code](https://github.com/asfrom30/FastCampusAndroid/tree/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/runtimepermission)
 * **Manifest File**
     > Add below code
     ```
@@ -194,14 +195,13 @@ Using **Contacts Permission**
     /* Version Compatibilty Check statement */
     // Bring present android version and do if version is above the Mashmallow
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // After Mashmallow version, Write Initial is ok
-        boolean hasPermission = PermissionUtil.hasPermissionAndRequestIfNot(this, Manifest.permission.READ_CONTACTS, REQ_PERMISSION);
-        if(hasPermission){
-            run();
-        } else {
-            // Nothing to do...
-        }
+      String permissions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+      boolean hasPermissions = PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, REQ_PERMISSION);
+      if(hasPermissions){
+        init();
+      }
     } else {
-        run();
+      init();
     }
     ```
 
@@ -211,18 +211,16 @@ It means that function can execute above **That Android Version**
     ```java
     public class PermissionUtil {
         @RequiresApi(api = Build.VERSION_CODES.M)
-        public static boolean hasPermissionAndRequestIfNot(Activity activity, String permission, int requestCode) {
+        public static boolean hasPermissionsAndRequestIfNot(Activity activity, String[] permissions, int requestCode) {
             Context context = activity.getBaseContext();
     
-            if(context.checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED){
-                return true;
-            } else {
-                /* If don't have permmsion, request permission */
-                String permissions[] = {Manifest.permission.READ_CONTACTS};
-                // Request Permission Pop-up appear
-                activity.requestPermissions(permissions, requestCode);
-                return false;
+            for (String permission : permissions) {
+                if(context.checkSelfPermission(permission) != PackageManager.PERMISSION_GRANTED){
+                    activity.requestPermissions(permissions, requestCode);
+                    return false;
+                }
             }
+            return true;
         }
     }
     ```
@@ -246,5 +244,37 @@ It means that function can execute above **That Android Version**
     }
     ```
 
+### -. Implicit Intent
+[source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/camerapermission/CameraActivity.java)
 
+[reference](https://developer.android.com/guide/components/intents-filters.html)
 
+* This is the code for Pick and Returning Image
+    ```java
+        @Override
+        public void onClick(View v) {
+            Intent intent = null;
+            switch (v.getId()) {
+                case R.id.camera_btn_gallery :
+                    intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    startActivityForResult(Intent.createChooser(intent, "Select Photo"), 100); // for returnning Image
+                    break;
+                case R.id.camera_btn_camera :
+                    break;
+            }
+        }
+        
+        @Override
+        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
+            if (resultCode == RESULT_OK) {
+                switch (requestCode) {
+                    case 100:
+                        Uri imageUri = data.getData();
+                        imageView.setImageURI(imageUri);
+                        break;
+        
+                }
+            }
+        }
+    ```
