@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.doyoon.android.fastcampusandroid.week3.fragment.ListFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="List"
+        android:layout_marginLeft="166dp"
+        android:layout_marginStart="166dp"
+        android:layout_marginTop="158dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/textView16" />
+
+    <Button
+        android:id="@+id/fragment_btn_go_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView16"
+        android:layout_marginLeft="129dp"
+        android:layout_marginStart="129dp"
+        android:layout_marginTop="20dp"
+        android:text="Button" />
+
+</RelativeLayout>

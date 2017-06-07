@@ -32,7 +32,12 @@
     <string name="btn_equal">=</string>
 
     <string name="btn_prev"> &lt; </string> <!-- less than -->
-    <string name="btn_next"> &gt; </string> <!-- greater than -->
+    <string name="btn_next"> &gt; </string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_maps">Map</string> <!-- greater than -->
 
 
 </resources>

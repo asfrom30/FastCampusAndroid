@@ -15,9 +15,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.doyoon.android.fastcampusandroid.R;
-import com.doyoon.android.fastcampusandroid.week3.runtimepermission.util.PermissionUtil;
+import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
 
-public class CameraActivity extends AppCompatActivity implements View.OnClickListener{
+public class GalleryActivityMain extends AppCompatActivity implements View.OnClickListener{
 
     public static final int REQ_PERMISSION = 100;
 

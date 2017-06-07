@@ -4,6 +4,69 @@ Study and Organize about Android in FastCampus
 ## week1
 
 ## Week2
+#### Basic Widget
+* Radio Group Listener
+    ```java
+    public class BasicWidget implements RadioGroup.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+            if(group.getId() == R.id.radioRgbGroup){
+                switch (checkedId){
+                    case R.id.radioRed:
+                        Toast.makeText(this, "RED.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radioBlue:
+                        Toast.makeText(this, "BLE.", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.radioGreen:
+                        Toast.makeText(this, "GREEN.", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        }
+    }
+    ```    
+
+* Seek Bar
+    ```java
+    public class BasicWidget implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            // seek bar에 변경사항이 있을때마다 호출한다
+            seekCount.setText(progress + ""); // setText에 숫자값만 단독으로 들어가면 앱이 다운된다. (int + "")
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    }
+    ```
+
+    
+* Toggle Button
+    ```java
+    public class BasicWidget implements CompoundButton.OnCheckedChangeListener {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            switch (buttonView.getId()){
+                case R.id.toggleButton:
+                    if(isChecked){
+                        Toast.makeText(this, "켜졌습니다.", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, "꺼졌습니다.", Toast.LENGTH_SHORT).show();
+                    }
+            }
+        }
+    }
+    ```
+    
+    
+    
 
 ## Week3
 ### -. Tip
@@ -82,9 +145,10 @@ Study and Organize about Android in FastCampus
         
 + Get Result from Next Activity using Intent 
 
-Present Activity[source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlMain.java)
+    Present Activity[source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlMain.java)
 
-Next Activity [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlSub.java)
+    Next Activity [source code](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week3/activitycontrol/ActivityControlSub.java)
+
 + Present Activity 
 
     + Using `startActivityForResult()`, not Using `startActivity()`
@@ -251,30 +315,67 @@ It means that function can execute above **That Android Version**
 
 * This is the code for Pick and Returning Image
     ```java
-        @Override
-        public void onClick(View v) {
-            Intent intent = null;
-            switch (v.getId()) {
-                case R.id.camera_btn_gallery :
-                    intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    startActivityForResult(Intent.createChooser(intent, "Select Photo"), 100); // for returnning Image
-                    break;
-                case R.id.camera_btn_camera :
-                    break;
-            }
-        }
-        
-        @Override
-        protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-            super.onActivityResult(requestCode, resultCode, data);
-            if (resultCode == RESULT_OK) {
-                switch (requestCode) {
-                    case 100:
-                        Uri imageUri = data.getData();
-                        imageView.setImageURI(imageUri);
-                        break;
-        
-                }
-            }
-        }
+    class Activity {
+      @Override
+          public void onClick(View v) {
+              Intent intent = null;
+              switch (v.getId()) {
+                  case R.id.camera_btn_gallery :
+                      intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                      startActivityForResult(Intent.createChooser(intent, "Select Photo"), 100); // for returnning Image
+                      break;
+                  case R.id.camera_btn_camera :
+                      break;
+              }
+          }
+          
+          @Override
+          protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+              super.onActivityResult(requestCode, resultCode, data);
+              if (resultCode == RESULT_OK) {
+                  switch (requestCode) {
+                      case 100:
+                          Uri imageUri = data.getData();
+                          imageView.setImageURI(imageUri);
+                          break;
+          
+                  }
+              }
+          }
+    }   
     ```
+### -. Camera Permission
+
+1. File Provider
+
+    After take a photo, write the file to external storage. during this time, you need permission. and you can obtain permission using **File provider** after **Nougat version**
+    
+    
+### Google Map and GPS in ViewPager
+
+
+### -. Const
+You can manage all **Constant Value** Using Class. This is example
+```java
+public class Const {
+    // Grouping(namespace)
+    public static class Camera {
+        public static final int REQ_CAMERA = 100;
+    }        
+    public static class Intent {
+        public static final int REQ_CODE = 101;
+    }
+}
+```
+
+## Week4
+### -. Thread
+
+
+
+
+
+
+
+
+

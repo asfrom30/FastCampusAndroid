@@ -1,4 +1,4 @@
-package com.doyoon.android.fastcampusandroid.week3.runtimepermission.util;
+package com.doyoon.android.fastcampusandroid.util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,7 +13,10 @@ import android.support.annotation.RequiresApi;
 
 public class PermissionUtil {
 
+
     @RequiresApi(api = Build.VERSION_CODES.M)
+//     String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION
+//                              , Manifest.permission.ACCESS_COARSE_LOCATION};  // Wifi 사용하여 Location
     public static boolean hasPermissionsAndRequestIfNot(Activity activity, String[] permissions, int requestCode) {
         Context context = activity.getBaseContext();
 
@@ -25,4 +28,6 @@ public class PermissionUtil {
         }
         return true;
     }
+
+
 }

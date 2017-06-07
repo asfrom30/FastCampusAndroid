@@ -11,7 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.doyoon.android.fastcampusandroid.R;
-import com.doyoon.android.fastcampusandroid.week3.runtimepermission.util.PermissionUtil;
+import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
 
 
 public class CheckPermissionActivity extends AppCompatActivity {

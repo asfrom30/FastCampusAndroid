@@ -3,12 +3,20 @@
     package="com.doyoon.android.fastcampusandroid">
 
     <!-- 카메라 권한 -->
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 전화번호부 권한 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <!-- 네트워크 권한 -->>
-     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 네트워크 권한 -->
+    >
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality. 
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <!-- 이것은 설치시 권한 -->
     <application
@@ -18,98 +26,103 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".MainActivity" />
         <activity android:name=".week2.lecture.ListenerExample" />
-        <activity android:name=".week2.lecture.BasicLayout.BasicLayoutActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".week2.lecture.BasicWidget.BasicWidgetActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".week2.quiz.CalculatorActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".week2.lecture.BasicLayout.BasicLayoutActivity" />
+        <activity android:name=".week2.lecture.BasicWidget.BasicWidgetActivity" />
+        <activity android:name=".week2.quiz.CalculatorActivity" />
         <activity android:name=".week2.quiz.CalculatorConstraintsActivity" />
-        <activity android:name=".week2.lecture.AdapterBasic.AdapterActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".week2.lecture.AdapterBasic.AdapterActivityMain" />
         <activity android:name=".week2.lecture.AdapterBasic.ListActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.GridActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.RecyclerActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.DetailActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.CustomListActivity" />
         <activity android:name=".week2.lecture.AdapterBasic.CustomDetailActivity" />
-        <activity android:name=".week2.lecture.RecyclerView.RecylcerActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".week2.lecture.IntentBasic.IntentBasicActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".week2.lecture.IntentBasic.IntentActivityMain">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".week2.lecture.RecyclerView.RecylcerActivityMain" />
+        <activity android:name=".week2.lecture.IntentBasic.IntentBasicActivity" />
+        <activity android:name=".week2.lecture.IntentBasic.IntentActivityMain" />
         <activity android:name=".week2.lecture.IntentBasic.GeneralActivity" />
         <activity
             android:name=".week2.lecture.IntentBasic.TransparentActivity"
             android:theme="@style/Theme.AppCompat.Translucent" />
-
-
-
         <activity
             android:name=".week3.property.PropertyActivity"
-            android:windowSoftInputMode="adjustResize">
-            <intent-filter><action android:name="android.intent.action.MAIN" /></intent-filter>
-        </activity>
-        <activity android:name=".week3.activitycontrol.ActivityControlMain">
-            <intent-filter><action android:name="android.intent.action.MAIN" /></intent-filter>
-        </activity>
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".week3.activitycontrol.ActivityControlMain" />
         <activity android:name=".week3.activitycontrol.ActivityControlSub" />
-        <activity android:name=".week3.webview.WebViewMain">
-            <intent-filter><action android:name="android.intent.action.MAIN" /></intent-filter>
-        </activity>
-        <activity android:name=".week3.runtimepermission.RuntimePermissionMainActivity">
-            <intent-filter><action android:name="android.intent.action.MAIN" /></intent-filter>
-        </activity>
+        <activity android:name=".week3.webview.WebViewMain" />
+        <activity android:name=".week3.runtimepermission.RuntimePermissionMainActivity" />
         <activity android:name=".week3.runtimepermission.CheckPermissionActivity" />
         <activity android:name=".week3.runtimepermission.ContactActivity" />
-        <activity android:name=".week3.camerapermission.CameraActivity">
-            <intent-filter><action android:name="android.intent.action.MAIN" /></intent-filter>
-        </activity>
+        <activity android:name=".week3.camerapermission.GalleryActivityMain" />
+        <activity android:name=".week3.adapter.RecyclerAgainMain" />
+        <activity android:name=".week3.camerapermission.CameraActivityMain" />
 
+        <!-- 사진을 저장하기 위한 파일에 대한 권한을 획득하기 위한 설정 -->
+        <!-- 1. Gradle 접근자 $ -->
+        <!-- 1.1 android:authorities="패키지명.provider" -->
+        <!-- 그래들의 속성값을 불러올 수 있다. -->
+        <!-- com.doyoon.android.provider or ${appicationId}.provider // 그래들안에 있다... -->
+        <!-- 1.2 android:authorities="패키지명.provider" -->
+        <!-- 2. android:resource="@xml/file_path -->
+        <!-- resource 파일을 res/xml 폴더안에 생성 -->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+        <activity android:name=".week3.fragment.FragmentActivityMain" />
+        <activity android:name=".week3.viewpager.ViewPagerActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            </intent-filter>
+        </activity>
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".week3.viewpager.MapsActivity"
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".week4.thread.ThreadBasicMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week4.thread.ThreadBasicSubActivity" />
+        <activity android:name=".week4.thread.ThreadBasicTestActivity" />
+        <activity android:name=".week4.thread.ThreadBasicRainActivity" />
+        <activity android:name=".week4.threadclock.ThreadClockMainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week4.handler.MultipleCountActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week4.handwritememo.HandWriteMemoActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
