@@ -5,10 +5,10 @@
     <!-- 카메라 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <!-- 전화번호부 권한 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- 네트워크 권한 -->
-    >
     <uses-permission android:name="android.permission.INTERNET" />
 
     <!--
@@ -55,10 +55,21 @@
         <activity android:name=".week3.runtimepermission.RuntimePermissionMainActivity" />
         <activity android:name=".week3.runtimepermission.CheckPermissionActivity" />
         <activity android:name=".week3.runtimepermission.ContactActivity" />
-        <activity android:name=".week3.camerapermission.GalleryActivityMain" />
         <activity android:name=".week3.adapter.RecyclerAgainMain" />
-        <activity android:name=".week3.camerapermission.CameraActivityMain" />
 
+        <!-- camera permission -->
+        <activity android:name=".week3.camerapermission.CameraActivityMain">
+            <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week3.camerapermission.GalleryActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
         <!-- 사진을 저장하기 위한 파일에 대한 권한을 획득하기 위한 설정 -->
         <!-- 1. Gradle 접근자 $ -->
         <!-- 1.1 android:authorities="패키지명.provider" -->
@@ -81,8 +92,6 @@
         <activity android:name=".week3.viewpager.ViewPagerActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
         </activity>
         <!--
@@ -113,12 +122,17 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".week4.handler.MultipleCountActivityMain">
+        <activity android:name=".week4.handwritememo.HandWriteMemoActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".week4.handwritememo.HandWriteMemoActivityMain">
+        <activity android:name=".week4.threadcommunication.ThreadHandlerActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week4.database.SqliteORMActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>

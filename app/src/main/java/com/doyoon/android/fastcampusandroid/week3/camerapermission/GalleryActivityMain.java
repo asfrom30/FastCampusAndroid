@@ -41,7 +41,6 @@ public class GalleryActivityMain extends AppCompatActivity implements View.OnCli
         btnGallery.setEnabled(false);
 
 
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // 마시멜로우 이상이면 이니셜만 써도 된다. LOLIPOP이면 .LOLIPOP
             String permissions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
             boolean hasPermissions = PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, REQ_PERMISSION);

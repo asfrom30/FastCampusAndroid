@@ -19,7 +19,6 @@ public class Loader_B {
 
         List<Data_A> datas = new ArrayList<>();
         // Logic
-
         ContentResolver resolver = context.getContentResolver();
 
         // Table Address

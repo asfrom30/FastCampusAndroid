@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class CameraActivityMain extends AppCompatActivity implements View.OnClickListener{
+    Uri fileUri;
 
     ImageView imageView;
     Button btnCaptuer;
@@ -38,7 +39,7 @@ public class CameraActivityMain extends AppCompatActivity implements View.OnClic
         this.setView();
         this.setLisntener();
 
-        String permssions[] = {Manifest.permission.CAMERA};
+        String permssions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             PermissionUtil.hasPermissionsAndRequestIfNot(this, permssions, 100);
         }
@@ -57,16 +58,14 @@ public class CameraActivityMain extends AppCompatActivity implements View.OnClic
         this.takePhoto();
     }
 
-    // 파일 Uri를 전역변수로 저장을 한다.
-    Uri fileUri;
 
     private void takePhoto() {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
-        // 롤리팝 미만 버전에서만 바로 실행
+        // 롤리팝 이상 버전에서는 권한 체크
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // 카메라를 찍어서 담을 파일을 미리 생성해 두어야 한다.
-            File photoFile = null;  // 왜 null을 했냐면 파일 IO를 사용하기 위해서...
+            File photoFile = null;  // 왜 nu ll을 했냐면 파일 IO를 사용하기 위해서...
             try {
                 photoFile = this.createFile();  // 호출한 측에서 try catch 처리..
                 if (photoFile != null) {
@@ -75,6 +74,7 @@ public class CameraActivityMain extends AppCompatActivity implements View.OnClic
                         // 이제 권한이 획득이 된것이다
                                                                         // 매니 패스트의 provider authority와 동일하다.
                         fileUri = FileProvider.getUriForFile(getBaseContext(), BuildConfig.APPLICATION_ID+".provider"/* Authority */, photoFile/* 파일을 넘겨준다. */);
+//                        Uri tempFileUri = FileProvider.getUriForFile(getBaseContext(), )
                     } else { // 마시멜로우 버전 이하는 권한 없이 획득
                         fileUri = Uri.fromFile(photoFile);
                     }
@@ -84,6 +84,7 @@ public class CameraActivityMain extends AppCompatActivity implements View.OnClic
                     startActivityForResult(intent, Const.Camera.REQ_CAMERA);
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 Toast.makeText(getBaseContext(), "사진파일 저장을 위한 임시파일을 생성할 수 없습니다", Toast.LENGTH_SHORT).show();
                 return; // void라고 하더라도 return 처리가 가능. 더이상 진행이 되면 안되니까 return
             }

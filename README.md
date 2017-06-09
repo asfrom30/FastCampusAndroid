@@ -1,7 +1,15 @@
 # FastCampusAndroid
 Study and Organize about Android in FastCampus
 
-## week1
+## Need to study
+* App Fundamental [Link](https://developer.android.com/guide/components/fundamentals.html)
+* Activity Life Cycle [Link](https://developer.android.com/guide/components/activities/activity-lifecycle.html)
+* Support Library [Link](https://developer.android.com/topic/libraries/support-library/index.html)
+* [Static nested class](#nestedclass) [Link](https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html)
+
+## Week1
+
+This week is not working in Android. See [Java Lecture]()
 
 ## Week2
 #### Basic Widget
@@ -64,9 +72,40 @@ Study and Organize about Android in FastCampus
         }
     }
     ```
+#### -. Basic Layout
+* GridLayout
+* LinearLayout
+* RelativeLayout
+* ConstraintLayout
+
+#### -. Intent Filter
+
+Run Activity
+
+If you want to run activity stand alone, You have to add this code in **intent-filter** in **Manifest file**
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" /> 
+            </intent-filter>
+            
+#### -. Intent Basic
+
+Send SMS / MMS
+
+    Intent it = new Intent(Intent.ACTION_VIEW);
+    it.putExtra("sms_body", "The SMS text");
+    it.setType("vnd.android-dir/mms-sms");
+    startActivity(it);
+
+[More example is here...](https://github.com/asfrom30/FastCampusAndroid/blob/master/app/src/main/java/com/doyoon/android/fastcampusandroid/week2/IntentExample/IntentExample.txt)
+
     
-    
-    
+
+#### -. Adapter
+
+#### -. RecyclerView
+
 
 ## Week3
 ### -. Tip
@@ -344,6 +383,89 @@ It means that function can execute above **That Android Version**
           }
     }   
     ```
+### -. Content Provider
+Get Contact Example
+
+First add permission to **Manifest File**
+```
+<!-- 전화번호부 권한 -->
+<uses-permission android:name="android.permission.READ_CONTACTS" />
+```
+
+And version and permission check. If doesn't have permission, ask user to allow to get permission in this app.
+
+```
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+     super.onCreate(savedInstanceState);
+     setContentView(R.layout.activity_recycler_again);
+ 
+     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+         String[] permissions = {Manifest.permission.READ_CONTACTS};
+         PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, 100);
+     } else {
+         init();
+     }
+ }
+ 
+ @Override
+ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+     super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+ 
+     if (requestCode == 100) {
+         if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+             init();
+         } else {
+             Toast.makeText(this, "권한을 승인하셔야만 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
+         }
+     }
+ }
+```
+
+If you want to get **Contacts** you have to use **Content Resolover**,
+
+```
+List<Contact> contactList = new ArrayList<>();
+ContentResolver contentResolver = context.getContentResolver();
+
+// Table Address
+Uri phoneUri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
+
+// Column name from table
+String proj[] = {ContactsContract.CommonDataKinds.Phone.CONTACT_ID
+        , ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME
+        , ContactsContract.CommonDataKinds.Phone.NUMBER};
+
+// Bring data using Content resolver
+Cursor cursor = contentResolver.query(phoneUri, proj, null, null, null);
+
+// Check data is existed in cursor
+if (cursor != null) {
+    while (cursor.moveToNext()) {
+        int index = cursor.getColumnIndex(proj[0]);
+        String id = cursor.getString(index);
+
+        index = cursor.getColumnIndex(proj[1]);
+        String name = cursor.getString(index);
+
+        index = cursor.getColumnIndex(proj[2]);
+        String tel = cursor.getString(index);
+
+        contactList.add(new Contact(id, name, tel));
+    }
+}
+// Note : Should be closed
+cursor.close();
+```
+
+* Non-blocking, Blocking, Channel, Stream, Database.. that type should be closed after task.
+because Even if memory allocation is released, it couldn't be closed.
+
+* Alarm, Calendar and more Content URI is [here](https://developer.android.com/reference/android/provider/package-summary.html)
+
+* <a name="nestedclass"></a> See **Static nested class** 
+
+
 ### -. Camera Permission
 
 1. File Provider
@@ -369,8 +491,160 @@ public class Const {
 ```
 
 ## Week4
-### -. Thread
+#### -. Thread Clock Example
 
+#### -. Thread Communication
+This Example is multiple counter. Make 4 Counter and try to each counter change each text view on couning
+
+* Main Activity
+    ```
+    /* Error Counter */
+    ErrorCounter errorCounter = new ErrorCounter(textViews[0]);
+    new Thread(errorCounter).start();
+    
+    /* Way 1 - RunOnUiThread */
+    RunOnUiThreadCounter runOnUiThreadCounter = new RunOnUiThreadCounter(this, textViews[1]);
+    new Thread(runOnUiThreadCounter).start();
+    
+    /* Way 2 - Handler */
+    HandlerCounter handlerCounter = new HandlerCounter(this);
+    new Thread(handlerCounter).start();
+    ```
+
+* ErrorCounter
+
+    If you try to change UI widget directly in sub thread, you encounter below error message.
+    Android prevent **Sub Thread** set UI Widget directly, It is because of sync issue. 
+
+        CalledFromWrongThreadException: Only the original thread that created a view hierarchy can touch its views.
+        
+    ```java
+    public class ErrorCounter implements Runnable {
+    
+        private TextView textView;
+        int count = 0;
+    
+        public ErrorCounter(TextView textView) {
+            this.textView = textView;
+        }
+    
+        @Override
+        public void run() {
+            for(int i=0; i<10; i++) {
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e){
+    
+                }
+                this.textView.setText(count+"");  // This code occurs error
+                count ++;
+            }
+        }
+    }
+    ```
+        
+* RunOnUiThread
+
+    Below code may work, but issue is still here. sometimes count until 10, sometimes count until 9.
+    because It can't be synced between `setText()` and `count`. `RunOnUiThread` throw their own code to main thread.
+    so, sub thread doesn't have that code.
+    
+    ```
+    this.activity.runOnUiThread(new Runnable() { // 코드로 가면 이렇게 객체를 생성하지 않고 함수를 직접 넘겨주면 된다.
+        @Override
+        public void run() {
+            textView.setText(count+""); // 여기는 메인스레드에서 동작한다. 코드를 넘겨준다.
+                                        // 메인 스레드에 붙이기 때문에.. Sub 스레드와 타이밍이 어긋난다.
+                                        // 9번째 왔을때 이 코드를 메인 스레드에 던져 놓고
+                                        // count++ 실행되고 이 코드가 실행하면 10이 찍히고
+                                        // count++가 실행되기 전에 이코드가 실행되면 9가 찍힌다.
+        }
+    });
+    ```
+ 
+* Handler
+
+    Using Handler and Looper
+
+    ```java
+    // Handler 클래스를 전달 받아서.. 서브 thread로 부터 메세지를 전달받을 Handler를 생성한다... 메세지 통신
+    public class HandlerCounter extends  Handler implements Runnable{
+    
+        public static final int SET_COUNT = 99;
+        private Activity activity;
+        private int count = 0;
+    
+        public HandlerCounter(Activity activity) {
+            this.activity = activity;
+        }
+    
+        @Override
+        public void run() {
+            for(int i=0; i < 10; i ++) {
+                try {
+                    Thread.sleep(500);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+    
+                // 핸들러를 통해 메세지를 날릴때 Msg를 생성해서 날릴 수 있따.
+                // 메세직 객체가 그렇게 설계가 되어 있다. arg1, arg2 두개의 argument를 날려줄 수 있다.
+                Message msg = new Message();
+                msg.what = SET_COUNT;
+                msg.arg1 = count;
+                // msg.arg1 = integer;
+                // msg.arg2 = integer;
+                // msg.setData();       // send Instance
+                sendMessage(msg);
+                /* Empty Message */
+                // sendEmptyMessage(SET_COUNT);
+    
+                count++;
+            }
+        }
+    
+        // 서브 thread에서 메세지를 전달하면 handleMessage 함수가 동작한다.
+        @Override
+        public void handleMessage(Message msg) {
+            // 메세지가 정해져 있따.
+            // msg.arg1;
+            // msg.arg2;
+    
+            // 자바에서는 주로 integer로 주고 받는다,
+            // 핸들러간 통신을 할때는 미리 상수로 정의 해 놓는다.
+    
+            switch (msg.what) {
+                case SET_COUNT:
+                    int tempCount = msg.arg1;
+                    ((TextView) activity.findViewById(R.id.multipleCount_tv_3)).setText(tempCount + "");
+                    break;
+            }
+    
+        }
+    }
+    ```
+
+* Interthread
+
+    [Link](https://stackoverflow.com/questions/5916370/how-to-use-notify-and-wait)
+    
+    `wait(), notify(), syncTocken`
+
+
+#### -. Paint Property
+
+```java
+public class PaintExample {
+    public PaintExample() {
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        paint.setDither(true);
+    }
+}
+```
 
 
 
