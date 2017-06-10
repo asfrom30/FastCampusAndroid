@@ -1,7 +1,5 @@
 package com.doyoon.android.fastcampusandroid.week4.database.domain;
 
-import com.doyoon.android.fastcampusandroid.week4.database.DBHelper;
-
 import java.util.List;
 
 /**
@@ -29,11 +27,11 @@ public class BbsDAO {
     */
 
     public static void create(BBS bbs){
-        DBHelper dbHelper = new DBHelper();
+//        DBHelper dbHelper = new DBHelper();
     }
 
     public static List<BBS> read(BBS bbs){
-
+        return null;
     }
 
     public static void update(BBS bbs){

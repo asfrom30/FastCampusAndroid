@@ -4,6 +4,7 @@
 
     <!-- 카메라 권한 -->
     <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Exteranl Storage Write Permission -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <!-- 전화번호부 권한 -->

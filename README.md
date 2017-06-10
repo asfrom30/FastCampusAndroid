@@ -270,7 +270,7 @@ If you want to use `WebView`, You need **resource permission**. It's different f
 >```
 >  <uses-permission android:name="android.permission.INTERNET" />
 >```
-```java
+```
 /* Dependency Injection */
 webView = (WebView) findViewById(R.id.webview);
 
@@ -294,7 +294,7 @@ Using **Contacts Permission**
 * `Present Activity`
     > If the version is corresponded, check permission. and then if don't have permission, request permission to User
       If have permission execution.
-    ```java
+    ```
     /* Version Compatibilty Check statement */
     // Bring present android version and do if version is above the Mashmallow
     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // After Mashmallow version, Write Initial is ok
@@ -383,6 +383,20 @@ It means that function can execute above **That Android Version**
           }
     }   
     ```
+### -. Manifest File
+[more detail](https://developer.android.com/guide/topics/manifest/provider-element.html)
+* provider
+
+    Declares a content provider component.
+
+### -. Content URI
+
+Content URIs have the syntax [more detail](https://developer.android.com/reference/android/content/ContentUris.html)
+    
+    content://authority/path/id
+
+
+
 ### -. Content Provider
 Get Contact Example
 
@@ -466,12 +480,203 @@ because Even if memory allocation is released, it couldn't be closed.
 * <a name="nestedclass"></a> See **Static nested class** 
 
 
-### -. Camera Permission
+### -. FileProvider and Camera
 
-1. File Provider
+**FileProvider** is a special subclass of **ContentProvider** that facilitates secure sharing of files associated with an app by creating a **content://** Uri for a file instead of a **file:/// Uri.**
 
-    After take a photo, write the file to external storage. during this time, you need permission. and you can obtain permission using **File provider** after **Nougat version**
+Why have to use **FileProvider** in Camera Action.
+
+Becuase when under the Lollipop Version. Photo file can be obtained from result **Intent**. See below
+```
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    imageUri = data.getData();
+}
+```
+
+But above the Lollipop Version, returned **Intent** which was sent as Camera Capture ```Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);``` is null.
+So the way to get Uri is store Global Variable as File. and obtain Uri from File
+```
+Uri fileURI;        // Global Variable
+
+public void takePhoto(){
+    // Create File
+    fileURI = Uri.fromFile(tempFile);
+}
+
+@Override
+protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+        imageUri = data.getData(); // Return URI
+    } else {
+        imageUri = fileUri;
+    }imageUri = data.getData();
+}
+```
+
+As the version updated, It is impossible obtaining URI from ```URI.fromFile()``` method after Marshmallow version, because of security issue
+the way of obtaining URI is using **File Provider**
+```
+FileProvider.getURiForFile(Context, Authority, File);
+```
+> Note : File Provider is belong to **support package.**
+
+```Autority``` name should be same as ```android:authorities``` in **Manifest File**
+
+> Note : you have to add ```<provider>``` tag in Manifest File
+
+In result, you have to add this code.
+```
+public void takePhoto(){
+    // Create File
     
+     /* Under Marshmallow Version doesn't need File Provider during access URI*/
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        fileURI = Uri.fromFile(tempFile);
+    } else { /* You have to access Using File Privider */
+        // File Provider need Authority
+        // Authority should be set in manifest file using <provider> tag for run below code
+        String authority = BuildConfig.APPLICATION_ID + ".provider"; // get app ID from Gradle
+        fileURI = FileProvider.getUriForFile((activity.getBaseContext()), authority, tempFile);
+    }
+}
+```
+
+So, this is all code about Using Camera
+
+> note : 
+
+
+* add **file_paht.xml** file in **xml folder** in **res folder**
+
+        <?xml version="1.0" encoding="utf-8"?>
+        <path>
+            <!--실제 경로와 추상경로가 있다. 실제 매핑되어 있는 것은 ...-->
+            <!--path = /Exteranal Strage/CameraPath이 된다. 갤러리 폴더가 하나 생성되어 있다.-->
+            <!--name = cotnent:// 로 시작하는 uri 주소체계의 suffix가 된다.-->
+            <external-path name="CameraName" path="CameraPath" />
+        </path>
+* add Permission in manifest file
+
+        <!-- 카메라 권한 -->
+        <uses-permission android:name="android.permission.CAMERA" />
+        <!-- Exteranl Storage Write Permission -->
+        <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+* add add Provider in manifest file
+    
+    > note : ```android:authorities``` get its name from gradle.
+    
+    > note : ```android:resource="@xml/file_path"``` should be match real xml file. 
+    
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_path" />
+        </provider>
+
+* Main Activity(Camera Capture)
+    ```
+    @Override
+    public void onClick(View v) {
+        this.fileUri = DeviceUtil.Camera.takePhoto(this, "CameraPath", Const.Device.REQ_CODE_CAMERA);
+    }
+    
+    /* Above the Lollipop version, Capture Camera Intent be returned as null(Intent is empty)
+     * That's why FileURI set to be global variable and call Image using this variable */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Const.Device.REQ_CODE_CAMERA) {
+            if (resultCode == RESULT_OK) {
+                Uri imageUri = null;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                    imageUri = data.getData(); // Return URI
+                } else {
+                    imageUri = fileUri;
+                }
+                imageView.setImageURI(imageUri);
+            }
+        }
+    }
+    ```    
+
+
+* Camera Util (File provider and Start Activity)
+    ```java
+    public static class Camera{
+        public static Uri takePhoto(Activity activity, String xmlExternalPath/* Folder Name */ , int requestCode) {
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    
+            /* Under Lollipop Version Doesn't need Convert File to URI*/
+            /* Just send Intent and In onActivityResult, You can get simply File's URI using Intent.getData(); */
+            if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+                activity.startActivityForResult(intent, requestCode);
+                return null;
+            }
+    
+            Uri fileURI = null;
+            File tempFile = null;
+    
+            try {
+                /* Create temp file for saving photo */
+                tempFile = DeviceUtil.createFileForCamera(xmlExternalPath); //TODO : Need to change File Util
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+    
+            if (tempFile == null) {
+                Log.e(TAG, "Created File is null for Camera(Photo Capture)");
+                return null;
+            }
+    
+            /* Under Marshmallow Version doesn't need File Provider during access URI*/
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+                fileURI = Uri.fromFile(tempFile);
+            } else { /* You have to access Using File Privider */
+                // File Provider need Authority
+                // Authority should be set in manifest file using <provider> tag for run below code
+                String authority = BuildConfig.APPLICATION_ID + ".provider"; // get app ID from Gradle
+                fileURI = FileProvider.getUriForFile((activity.getBaseContext()), authority, tempFile);
+            }
+    
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, fileURI);
+            activity.startActivityForResult(intent, requestCode); // NOTE : Context doesn't have startActivityForResult() method.
+    
+            return fileURI;
+        }
+    }
+    ```
+
+    ```
+    // 파일생성에 관한 함수를 만들고 Exception에 담는다.
+    private static File createFileForCamera(String xmlExternalPath) throws IOException {
+        // 임시 파일명 생성
+        String tempFilename = "TEMP_" + System.currentTimeMillis();
+        // 임시파일 저장용 디렉토리 생성
+        // 익스터널 스토리지의 루트 경로(실제 시스템의 루트가 아님)
+        // XML에서 설정했던 그 경로에 대한 권한을 얻는 것이다.
+        File tempDir = new File(Environment.getExternalStorageDirectory() +"/" + xmlExternalPath + "/"); // path라는 것을 알려주기 위해 /로 랩한다
+        if(!tempDir.exists()){
+            tempDir.mkdir(); // 없으면 모두 생성
+        }
+    
+        //실제 임시파일을 생성
+        File tempFile = File.createTempFile(
+                tempFilename,// 파일네임
+                ".jpg",     // suffix
+                tempDir     // 디렉토리
+        );
+        return tempFile;
+    }
+    ```
+   
     
 ### Google Map and GPS in ViewPager
 

@@ -45,7 +45,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
     // DB 헬퍼를 만들때는 필요한 것은 Context밖에 필요가 없다.
     // db 파일은 /data/data/패키지명/database/test_database.db 가 생성이 된다.
-    private DBHelper(Context context) {
+    public DBHelper(Context context) {
         // Factory는 connection pool 같은거임(
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }

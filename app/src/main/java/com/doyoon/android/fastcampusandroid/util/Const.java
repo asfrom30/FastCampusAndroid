@@ -1,15 +1,19 @@
-package com.doyoon.android.fastcampusandroid.week3.camerapermission;
+package com.doyoon.android.fastcampusandroid.util;
 
 /**
  * Created by DOYOON on 6/2/2017.
+ */
+
+/*
+    Version : 0.0.1
  */
 
 public class Const {
 
 
     // 그루핑
-    public static class Camera {
-        public static final int REQ_CAMERA = 100;
+    public static class Device {
+        public static final int REQ_CODE_CAMERA = 2000;
     }
 
     public static class Permission {
