@@ -3,6 +3,8 @@ package com.doyoon.android.fastcampusandroid.week5.restapi;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,24 +26,23 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInterface, OnMapReadyCallback{
+public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInterface, OnMapReadyCallback, AbsListView.OnScrollListener{
 
     public static final String TAG = HttpUrlConnectionMain.class.getName();
 
     private String url;
     TextView textView;
     private ListView listView;
+    private GoogleMap googleMap;
 
     // http://openapi.seoul.go.kr:8088/6a734e76676d697235397548734e42/json/GeoInfoPublicToiletWGS/1/10
     static final String URL_PREFIX = "http://openapi.seoul.go.kr:8088/";
     static final String URL_CERT = "6a734e76676d697235397548734e42/";
     static final String URL_MID = "json/GeoInfoPublicToiletWGS";
 
-    int pageBegin = 1;
-    int pageEnd = 10;
-
     // 페이지간 몇개씩 이동을 할 것인지?
-    int offset = 10;
+    int page = 0;
+    private final int PAGE_OFFSET = 10;
 
     // Adpater
     ArrayAdapter<String> adapter;
@@ -49,24 +50,15 @@ public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInte
     final List<String> toiletList = new ArrayList<>();
 
 
+    //
+    boolean lastItemVisible = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_http_url_connection);
 
-        textView = (TextView) findViewById(R.id.httpUrlConnection_tv);
-        listView = (ListView) findViewById(R.id.httpUrlConnection_lv);
+        setViews();
 
-        /* List */
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toiletList);
-        listView.setAdapter(adapter);
-
-        /* 스크롤의 상태값을 체크해주는 리스너 */
-
-        /* Map */
-        FragmentManager manager = getSupportFragmentManager();
-        SupportMapFragment mapFragment = (SupportMapFragment) manager.findFragmentById(R.id.mapViewFragment);
-        mapFragment.getMapAsync(this);
 
         /* deprecated */
         try {
@@ -79,12 +71,45 @@ public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInte
         }
     }
 
-    public void setURL(int page) {
+    private void setViews() {
+        setContentView(R.layout.activity_http_url_connection);
 
-        int end = page * this.offset;
-        int begin = end  - this.offset + 1;
+        textView = (TextView) findViewById(R.id.httpUrlConnection_tv);
+        listView = (ListView) findViewById(R.id.httpUrlConnection_lv);
+
+        /* List */
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, toiletList);
+        listView.setAdapter(adapter);
+
+        /* Listener */
+        this.setListener();
+
+        /* Map */
+        this.setMap();
+    }
+
+    public void nextPage() {
+        this.page += 1;
+    }
+
+    public void setURL() {
+
+        int end = this.page * this.PAGE_OFFSET;
+        int begin = end  - this.PAGE_OFFSET + 1;
 
         this.url = URL_PREFIX + URL_CERT + URL_MID + "/" + begin + "/" + end;
+    }
+
+    private void setListener(){
+        /* 스크롤의 상태값을 체크해주는 리스너 */
+        listView.setOnScrollListener(this);
+    }
+
+    private void setMap(){
+        /* Map */
+        FragmentManager manager = getSupportFragmentManager();
+        SupportMapFragment mapFragment = (SupportMapFragment) manager.findFragmentById(R.id.mapViewFragment);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
@@ -92,18 +117,31 @@ public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInte
         return this.url;
     }
 
+    public Data converJson(String jsonString) {
+        Gson gson = new Gson();
+        // 1. json String -> class로 변환
+        Data data = gson.fromJson(jsonString, Data.class);
+        return data;
+    }
+
+    public void setItemCount(int totalCount) {
+        this.textView.setText(totalCount + ""); /* 한줄이지만 빼내주는게 좋다.*/
+    }
+
     @Override
     public void postExecute(String jsonResult) {
-        Gson gson = new Gson();
 
-        // 1. json String -> class로 변환
-        Data data = gson.fromJson(jsonResult, Data.class);
+        Data data = converJson(jsonResult);
 
         // 전체 가져온 사이즈를 표시해준다.
-        this.textView.setText(data.getGeoInfoPublicToiletWGS().getList_total_count() + "");
+        int totalCount = data.getGeoInfoPublicToiletWGS().getList_total_count();
+        Row rows[] = data.getGeoInfoPublicToiletWGS().getRow();
+
+
+
 
         // Get Row....
-        Row rows[] = data.getGeoInfoPublicToiletWGS().getRow();
+
 
         for (Row row : rows) {
             toiletList.add(row.getGU_NM() + row.getHNR_NAM());
@@ -127,22 +165,42 @@ public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInte
         adapter.notifyDataSetChanged();
     }
 
-    GoogleMap googleMap;
-
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        // setPage(1)
-        // setURl(pageBegin, pageEnd);
-        this.setURL(1);
-        Remote.newTask(this);
+        this.loadPage();
 
         /* Camera Move */
         this.googleMap = googleMap;
         // 이동한다. 갱신할때마다 업데이트 해야 하므로. 그리고 변수명을 던져준다.
 //        LatLng latLng = new LatLng(37.516066, 127.019361);
 //        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+    }
 
+    /* 내 현재 스크롤이 끝까지 가서 더이상 움직이지 않는다를 체크해준다. */
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+        if (scrollState == SCROLL_STATE_IDLE && lastItemVisible) { // 마지막에 가면 아이들 상태가 된다.
+            this.loadPage();
+        }
+    }
 
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        // firstVisibleItem 현재 화면에 보여지는 첫번째 아이템의 번호
+        // visibleItemCount 현재 화면에 보여지는 아이템의 개수
+        // totalItemCount 리스트에 담겨 있는 전체 아이템의 개수...
+        Log.e(TAG, "firstVisibleItem : " + firstVisibleItem + ", visibleItemCount" + visibleItemCount + ", totalItemCount :" + totalItemCount);
+        if (firstVisibleItem + visibleItemCount == totalItemCount) {
+            lastItemVisible = true;
+        } else {
+            lastItemVisible = false;
+        }
+    }
+
+    private void loadPage(){
+        nextPage();
+        setURL();
+        Remote.newTask(this);
     }
 }
