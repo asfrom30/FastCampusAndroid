@@ -7,7 +7,7 @@
     tools:context="com.doyoon.android.fastcampusandroid.week2.lecture.BasicWidget.BasicWidgetActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/httpUrlConnection_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="TextView"
@@ -33,8 +33,8 @@
         android:layout_width="wrap_content"
         android:layout_height="48dp"
         android:text="@string/word_dog"
-        app:layout_constraintLeft_toLeftOf="@+id/textView"
-        app:layout_constraintRight_toRightOf="@+id/textView"
+        app:layout_constraintLeft_toLeftOf="@+id/httpUrlConnection_tv"
+        app:layout_constraintRight_toRightOf="@+id/httpUrlConnection_tv"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="8dp"
         app:layout_constraintHorizontal_bias="0.7"

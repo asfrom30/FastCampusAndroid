@@ -37,7 +37,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_maps">Map</string> <!-- greater than -->
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_thread_async_task_main">ThreadAsyncTaskMain</string> <!-- greater than -->
 
 
 </resources>

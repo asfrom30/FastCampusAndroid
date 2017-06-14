@@ -6,13 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import com.doyoon.android.fastcampusandroid.week4.database.domain.BBS;
 import com.doyoon.android.fastcampusandroid.week4.database.domain.Memo;
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.GenericRawResults;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * Created by DOYOON on 6/9/2017.
@@ -33,10 +30,9 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
     public static final int DATABASE_VERSION = 1;
 
 
-    /* 싱글턴 */
     private static DBHelper instance = null;
-    public static DBHelper getInstance(Context context) {
-        /* 부가적으로 syncronize도 필요하다... */
+
+    public static DBHelper getInstance(Context context) {  // 부가적으로 syncronize도 필요하다..
         if (instance == null) {
             instance = new DBHelper(context);
         }
@@ -45,7 +41,7 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
 
     // DB 헬퍼를 만들때는 필요한 것은 Context밖에 필요가 없다.
     // db 파일은 /data/data/패키지명/database/test_database.db 가 생성이 된다.
-    public DBHelper(Context context) {
+    private DBHelper(Context context) {
         // Factory는 connection pool 같은거임(
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -77,91 +73,13 @@ public class DBHelper extends OrmLiteSqliteOpenHelper {
             /* 업그레이드 하는 사람 && 버전업에서 테이블 추가*/
             /* 버전업이 되면서 BBS를 테이블이 추가 되었다. */
             TableUtils.createTable(connectionSource, BBS.class);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
-    // Create
-    public void create(Memo memo){
-        try {
-            // 1. 테이블에 연결
-            // Generic은 타입제한을 하는 것... DAO<T, id>
-            // T형은 클래스, id의 형타입을 <>안에 선언..
-            Dao<Memo, Integer> dao = getDao(Memo.class);
-            // 2. 데이터를 입력
-            dao.create(memo);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Read
-    public List<Memo> readAll(){
-        List<Memo> datas = null;
-        try {
-            Dao<Memo, Integer> dao = getDao(Memo.class);
-            datas = dao.queryForAll();  // 테이블의 전체 데이터를 가져온다.
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return datas;
-    }
-
-    public Memo read(int memoId) {
-        Dao<Memo, Integer> dao = null;
-        Memo memo = null;
-        try {
-            dao = getDao(Memo.class);
-            memo = dao.queryForId(memoId);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return memo;
-    }
-    /* Search */
-    // Search를 하면 목록으로가져온다. 하나 이상이 걸린다.
-    public List<Memo> search(String word){
-        List<Memo> datas = null;
-        try {
-            Dao<Memo, Integer> dao = getDao(Memo.class);
-            String query = "select * from memo where content like '%" + word + "%";
-            GenericRawResults<Memo> temps = dao.queryRaw(query, dao.getRawRowMapper());
-            temps.getResults();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return datas;
-    }
-
-    /* update */
-    // 업데이트의 속성은 기본적으로 데이터가 있어야 한다.
-    public void update(Memo memo){
-        try {
-            Dao<Memo, Integer> dao = getDao(Memo.class);
-            dao.update(memo);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Delete
-    public void delete(Memo memo){
-        try {
-            Dao<Memo, Integer> dao = getDao(Memo.class);
-            dao.delete(memo);
-            // 참고 : 아이디로 삭제
-            // dao.deleteById(3);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // 오버로드
-    public void delete(int id) {
-        try {
-            Dao<Memo, Integer> dao = getDao(Memo.class);
-            dao.deleteById(id);
+            /* 버전별로 무엇이 업그레이드 되어 있는지 확인해서 다르게 처리한다. */
+//            if(oldVersion == 1){
+//                TableUtils.createTable(connectionSource, Memo.class);
+//            }else{
+//                onCreate(database, connectionSource);
+//            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -11,21 +11,25 @@ import java.util.Date;
 // table 이름을 memo야..
 @DatabaseTable(tableName = "memo")
 public class Memo {
-    @DatabaseField(generatedId = true)
+    @DatabaseField(generatedId = true)  // primary key가 된다.
     int id;
-    @DatabaseField
-    String title;
-    @DatabaseField(columnDefinition = "content")
-//    @DatabaseField(columnDefinition = "content", generatedId = true)      // and 조건은 쉼표로 구분
-    String content;
-    // 데이터베이스 컬럼으로 사용하지 않는다.
-    String myReamrk;
 
-    @DatabaseField
+    @DatabaseField  // default definition은 변수명 그대로이다.
+    String title;
+
+    @DatabaseField(columnDefinition = "content") //    @DatabaseField(columnDefinition = "content", generatedId = true) and 조건은 쉼표로 구분
+    String content;
+
+    @DatabaseField      // 날짜 필드.
     private Date date;
+
+    String myReamrk; // 어노테이션이 없으면데이터베이스 컬럼으로 사용하지 않는다.
+
+
 
     public Memo() {
         // 2월 버전까지는 ORM LITE는 기본 생성자가 없으면 동작하지 않습니다.
+        // 버전 업그레이드시 한번 체크..
         setDate();
     }
 

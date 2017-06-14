@@ -699,7 +699,8 @@ public class Const {
 #### -. Thread Clock Example
 
 #### -. Thread Communication
-This Example is multiple counter. Make 4 Counter and try to each counter change each text view on couning
+This Example is multiple counter(text view). Change 4 **Text View** at the same time using each **Thread**
+
 
 * Main Activity
     ```
@@ -836,7 +837,7 @@ This Example is multiple counter. Make 4 Counter and try to each counter change 
     `wait(), notify(), syncTocken`
 
 
-#### -. Paint Property
+#### -. Paint
 
 ```java
 public class PaintExample {
@@ -850,6 +851,126 @@ public class PaintExample {
     }
 }
 ```
+
+#### Sqlite and ORM
+There are two famous ORM. One is **Ormlite** and the other is **GreenDAO**. In this lecture, we are going to use ORMLite
+
+Add dependendy 
+```
+                // package / class / version
+compile 'com.j256.ormlite:ormlite-core:5.0'
+compile 'com.j256.ormlite:ormlite-android:5.0'
+```
+
+## Week 5
+
+#### Progress Dialog
+```
+progressDialog = new ProgressDialog(this);
+progressDialog.setTitle("진행중....");
+progressDialog.setMessage("진행중 표시되는 메세지 입니다.");
+progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+```
+
+#### Async Task
+**Subthread** vs **Async Task** vs **Retrofit**
+
+`AsyncTask` is type of sub thread. It helps do something in background as same as sub thread.
+But we use `Asynctask` when task's number is limited or Routine is already fixed unlike sub thread.
+
+> Note : It means we can expect when the **Thread** is ended. For example get data using Network is belong to be in this case, but Chat Server and Client not.
+because we can't expect when the user ended their Chat server and client
+
+* Default **AsyncTask**
+
+    ```
+    public void test(){
+        // First Generic, Second Generic, Third Generic
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected void onPreExecute() {
+                // Run Main Thread(Can access UI Thread)
+            }
+    
+            @Override
+            protected Void doInBackground(Void... params) {
+                // Run Sub Thread
+                return null;
+            }
+    
+            @Override
+            protected void onPostExecute(Void aVoid) {
+                // Run Main Thread(Can access UI Thread)
+            }
+            
+        }.execute();
+    }
+    ```
+    * First Generic
+     
+        the variable from main thread can be passed on First Generic. `.excute(/* params */)` and ge `doInBackground(Void... params)` 
+        **...** means it's array but not fixed size. see String params example.
+        
+        ```
+        AsyncTask<String, Void, Void>() ...
+        
+            @Override
+            protected Void doInBackground(String... params) {
+                // Run Sub Thread
+                String param1 = params[0];
+                String param2 = param[1];
+                return null;
+                
+        }.execute("Param1", "Param2", "Param3");
+       ```
+   
+    * Second Generic
+   
+        Call `publishProgress()` in `doInBackground()` and then `onProgressUpdate()` method is
+         called over and over again until do in `doInBackground()`
+        
+        ```
+        AsyncTask<Void, Integer, Void>() ...
+            @Override
+            protected void onProgressUpdate(Integer... values) { /* Second Generic Param */)
+                super.onProgressUpdate(values);
+                progressDialog.setMessage("진행율 =" + values[0] + "%");
+            }
+            @Override
+            protected Void doInBackground(String... params) {
+                publishProgress(int1, int2, ... ); /* Second Generic Param */
+            }
+        }
+       ```
+    
+    * Third Generic
+        
+       `doInBackground()` method's return value passes to `onPostExecute()` params
+       
+        ```
+        @Override
+        protected Float doInBackground(String... params) { // ... 세개표시가 배열이라는 표시고 몇개가 들어올지 모르는것.
+           try {
+               for(int i=0; i<10; i++) {
+                   publishProgress(i*10);  // onProgressUpdate 주기적으로 업데이트 해준다.
+                   Thread.sleep(100);
+               }
+           } catch (InterruptedException e) {
+               e.printStackTrace();
+           }
+           return 1000.4f; /* Third Generic */
+        }
+        
+        @Override
+        protected void onPostExecute(Float result) { /* Third Generic */
+           setDone();
+           postProcess();
+        }
+        ```
+
+#### Remote Data from Network
+Network 
+
 
 
 

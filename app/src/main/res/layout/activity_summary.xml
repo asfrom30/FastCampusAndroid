@@ -14,7 +14,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/textView"
+        android:id="@+id/httpUrlConnection_tv"
         app:layout_constraintVertical_bias="0.502" />
 
     <Button
@@ -25,5 +25,5 @@
         android:text="Button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/httpUrlConnection_tv" />
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,7 @@ import android.util.Log;
 
 import com.doyoon.android.fastcampusandroid.R;
 import com.doyoon.android.fastcampusandroid.week4.database.domain.Memo;
+import com.doyoon.android.fastcampusandroid.week4.database.domain.MemoDAO;
 
 import java.util.List;
 
@@ -16,30 +17,48 @@ public class SqliteORMActivityMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sqlite_orm);
 
-        DBHelper dbHelper = new DBHelper(this);
+        DBHelper dbHelper = DBHelper.getInstance(this.getBaseContext());
+
+        MemoDAO.init(dbHelper);
+        MemoDAO memoDAO = MemoDAO.getInstance(); // get Instance 할때마다 변수를 넘겨주는게 부담스러워서..
 
         for(int i=0; i < 10; i++) {
             Memo memo = new Memo();
             memo.setTitle("제목" + i);
             memo.setContent("내용" + i);
-            dbHelper.create(memo);
+            memoDAO.create(memo);
         }
 
-        Memo one = dbHelper.read(3);
-        Log.i("Memo", one.getId() + ", title=" + one.getTitle() + ", content=" + one.getContent());
+        // 데이터 하나 읽어오기.
+        Memo one = memoDAO.read(3);
+        if (one != null) {
+            Log.i("Memo", one.getId() + ", title=" + one.getTitle() + ", content=" + one.getContent());
+        }
 
         // 데이터 전체 읽어오기.
+        List<Memo> memoList = memoDAO.readAll();
+        Log.i("Memo", "===================================================All Memo List" + memoList.size());
+        for (Memo memo : memoList) {
+            Log.i("Memo", memo.getId() + ", title=" + memo.getTitle() + ", content=" + memo.getContent());
+        }
 
         // 데이터 검색하기
-        List<Memo> memoList = dbHelper.search("내용3");
+        List<Memo> memoSearchList = memoDAO.search("내용3");
 
         // 업데이트하기
-        Memo memo = dbHelper.read(3);
-        memo.setContent("헬로");
-        dbHelper.update(memo);
+        Memo tempMemo = memoDAO.read(3);
+        if (tempMemo != null) {
+            tempMemo.setContent("헬로");
+            memoDAO.update(tempMemo);
+        }
 
-        // 삭제하기
-
+        // 모두 지우기
+        memoDAO.delete(memoDAO.readAll());
+        memoList = memoDAO.readAll();
+        Log.i("Memo", "===================================================Again All Memo List" + memoList.size());
+        for (Memo memo : memoList) {
+            Log.i("Memo", memo.getId() + ", title=" + memo.getTitle() + ", content=" + memo.getContent());
+        }
 
     }
 }

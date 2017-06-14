@@ -26,7 +26,7 @@ public class ListenerExample extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.activity_summary);
 
         // R은 Resource의 약자.
-        tv = (TextView) findViewById(R.id.textView);  // View 클래스를 상속받아서 만들어진다. 새로 캐스팅을 해야 한다.
+        tv = (TextView) findViewById(R.id.httpUrlConnection_tv);  // View 클래스를 상속받아서 만들어진다. 새로 캐스팅을 해야 한다.
         btn = (Button) findViewById(R.id.btnClick);
 
         //1번 형태로 구현

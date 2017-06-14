@@ -9,21 +9,10 @@ import java.util.List;
 /* BBS DAO도 싱글턴으로 처리할 수 있다.... */
 public class BbsDAO {
     /* 기본 설계
-    public static void create(BBS bbs){
-
-    }
-
-    public static List<BBS> read(BBS bbs){
-
-    }
-
-    public static void update(BBS bbs){
-
-    }
-
-    public static void delete(BBS bbs){
-
-    }
+    public static void create(BBS bbs){}
+    public static List<BBS> read(BBS bbs){}
+    public static void update(BBS bbs){}
+    public static void delete(BBS bbs){}
     */
 
     public static void create(BBS bbs){

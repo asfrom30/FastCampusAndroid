@@ -6,7 +6,7 @@
     tools:context="com.doyoon.android.fastcampusandroid.week2.lecture.BasicLayout.RelativeActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/httpUrlConnection_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Relative"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="18dp"
         android:text="Button"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/httpUrlConnection_tv"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginLeft="22dp"
