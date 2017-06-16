@@ -2,9 +2,7 @@ package com.doyoon.android.fastcampusandroid.week3.camerapermission;
 
 import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -15,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.doyoon.android.fastcampusandroid.R;
-import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
+import com.doyoon.android.fastcampusandroid.util.PermissionControl;
 
-public class GalleryActivityMain extends AppCompatActivity implements View.OnClickListener{
+public class GalleryActivityMain extends AppCompatActivity implements View.OnClickListener, PermissionControl.Callback{
 
     public static final int REQ_PERMISSION = 100;
 
@@ -41,16 +39,8 @@ public class GalleryActivityMain extends AppCompatActivity implements View.OnCli
         btnGallery.setEnabled(false);
 
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // 마시멜로우 이상이면 이니셜만 써도 된다. LOLIPOP이면 .LOLIPOP
-            String permissions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
-            boolean hasPermissions = PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, REQ_PERMISSION);
-            if(hasPermissions){
-              init();
-            }
-        } else {
-            init();
-        }
-
+        String permissions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        PermissionControl.requestAndRunOrNot(this, permissions);
     }
 
     // 3. 사용자가 권한체크 팝업에서 권한을 승인 또는 거절하면 아래 메서드가 호출된다.
@@ -58,24 +48,16 @@ public class GalleryActivityMain extends AppCompatActivity implements View.OnCli
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQ_PERMISSION){
-            // 3.1 사용자가 승인을 했음.
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                init();
-                // 3.2 사용자가 거절 했음.
-            } else {
-                cancle();
-
-            }
-        }
+        PermissionControl.postPermissionResult(this, requestCode, permissions, grantResults);
     }
 
-    private void init() {
+    @Override
+    public void run() {
         btnGallery.setEnabled(true);
         btnCamera.setEnabled(true);
     }
 
+    @Override
     public void cancle(){
         Toast.makeText(this, "권한요청을 승인하셔야 앱을 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
         finish();

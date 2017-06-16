@@ -39,7 +39,13 @@ dependencies {
     compile 'com.google.android.gms:play-services-maps:10.2.6'
     compile 'com.j256.ormlite:ormlite-core:5.0'
     compile 'com.j256.ormlite:ormlite-android:5.0'
-    testCompile 'junit:junit:4.12'
-
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.github.bumptech.glide:glide:3.+'
+
+    compile 'com.github.bumptech.glide:glide:3.+'
+    compile 'jp.wasabeef:glide-transformations:2.0.2'
+
+
+
+    testCompile 'junit:junit:4.12'
 }

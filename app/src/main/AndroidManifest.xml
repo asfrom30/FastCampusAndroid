@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Exteranl Storage Write Permission -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!-- Read 권한보다 Write권한이 상위에 있어서 Write만 있으면 Read는 사용하지 않아도 된다.-->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- 전화번호부 권한 -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -60,11 +62,6 @@
 
         <!-- camera permission -->
         <activity android:name=".week3.camerapermission.CameraActivityMain">
-            <intent-filter>
-                <category android:name="android.intent.category.LAUNCHER" />
-
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".week3.camerapermission.GalleryActivityMain">
             <intent-filter>
@@ -138,11 +135,33 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".week5.async.ThreadAsyncTaskMain">
-        </activity>
+        <activity android:name=".week5.async.ThreadAsyncTaskMain" />
         <activity android:name=".week5.restapi.HttpUrlConnectionMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".week5.service.ServiceMain"
+            android:label="@string/title_activity_service_main"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".week5.service.MyService"
+            android:enabled="true"
+            android:exported="true" />
+
+        <activity
+            android:name=".week5.musicplayer.MusicPlayerMain"
+            android:label="@string/title_activity_music_player"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>

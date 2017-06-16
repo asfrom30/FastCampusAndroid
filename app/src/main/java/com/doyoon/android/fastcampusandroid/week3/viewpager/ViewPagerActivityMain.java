@@ -16,7 +16,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.doyoon.android.fastcampusandroid.R;
-import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +69,7 @@ public class ViewPagerActivityMain extends AppCompatActivity {
     public void getLocationPermission(){
         String permissions[] = {Manifest.permission.ACCESS_FINE_LOCATION};
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, 101);
+//            PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, 101);
         }
     }
 

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.doyoon.android.fastcampusandroid.week5.service.ServiceMain"
+    tools:showIn="@layout/activity_service_main">
+
+    <Button
+        android:id="@+id/startActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="startActivity"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@+id/endActivity"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/bind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="bind"
+        app:layout_constraintBottom_toBottomOf="@+id/endActivity"
+        app:layout_constraintLeft_toRightOf="@+id/endActivity"
+        app:layout_constraintRight_toLeftOf="@+id/unbind"
+        app:layout_constraintTop_toTopOf="@+id/endActivity" />
+
+    <Button
+        android:id="@+id/endActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="endActivity"
+        app:layout_constraintBottom_toBottomOf="@+id/startActivity"
+        app:layout_constraintLeft_toRightOf="@+id/startActivity"
+        app:layout_constraintRight_toLeftOf="@+id/bind"
+        app:layout_constraintTop_toTopOf="@+id/startActivity" />
+
+    <Button
+        android:id="@+id/unbind"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="unbind"
+        app:layout_constraintBottom_toBottomOf="@+id/bind"
+        app:layout_constraintLeft_toRightOf="@+id/bind"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/bind" />
+</android.support.constraint.ConstraintLayout>

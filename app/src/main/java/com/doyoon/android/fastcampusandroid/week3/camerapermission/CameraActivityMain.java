@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import com.doyoon.android.fastcampusandroid.R;
 import com.doyoon.android.fastcampusandroid.util.Const;
 import com.doyoon.android.fastcampusandroid.util.DeviceUtil;
-import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
 
 public class CameraActivityMain extends AppCompatActivity implements View.OnClickListener{
 
@@ -36,9 +35,11 @@ public class CameraActivityMain extends AppCompatActivity implements View.OnClic
         this.setView();
         this.setLisntener();
 
+
         String permssions[] = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+//        PermissionControl.requestAndRunOrNot(this, this, per);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            PermissionUtil.hasPermissionsAndRequestIfNot(this, permssions, 100);
+//            PermissionUtil.hasPermissionsAndRequestIfNot(this, permssions, 100);
         }
     }
     public void setView(){

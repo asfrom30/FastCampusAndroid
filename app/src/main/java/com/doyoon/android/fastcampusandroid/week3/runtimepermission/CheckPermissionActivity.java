@@ -11,10 +11,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.doyoon.android.fastcampusandroid.R;
-import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
+import com.doyoon.android.fastcampusandroid.util.PermissionControl;
 
-
-public class CheckPermissionActivity extends AppCompatActivity {
+public class CheckPermissionActivity extends AppCompatActivity implements PermissionControl.Callback {
 
     private final int REQ_PERMISSION = 100;
 
@@ -23,19 +22,9 @@ public class CheckPermissionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_permission);
 
-        /* 버전 호환성 체크 */
-        // 설치 안드로이드폰의 api level 가져오기, // api level이 23이상일 경우만 실행
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){ // 마시멜로우 이상이면 이니셜만 써도 된다. LOLIPOP이면 .LOLIPOP
-            String[] permissions = {Manifest.permission.READ_CONTACTS};
-            boolean hasPermission = PermissionUtil.hasPermissionsAndRequestIfNot(this, permissions, REQ_PERMISSION);
-            if(hasPermission){
-                run();
-            } else {
-                // Nothing to do...
-            }
-        } else {
-            run();
-        }
+
+        String[] permissions = {Manifest.permission.READ_CONTACTS};
+        PermissionControl.requestAndRunOrNot(this, this, permissions);
     }
 
     /* Annotation */
@@ -59,22 +48,16 @@ public class CheckPermissionActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if(requestCode == REQ_PERMISSION){
-            // 3.1 사용자가 승인을 했음.
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                run();
-            // 3.2 사용자가 거절 했음.
-            } else {
-                cancle();
-            }
-        }
+        PermissionControl.postPermissionResult(this, requestCode, permissions, grantResults);
     }
 
+    @Override
     public void run(){
         Intent intent = new Intent(this, ContactActivity.class);
         startActivity(intent);
     }
 
+    @Override
     public void cancle(){
         Toast.makeText(this, "권한요청을 승인하셔야 앱을 사용할 수 있습니다.", Toast.LENGTH_SHORT).show();
         finish();

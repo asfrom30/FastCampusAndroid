@@ -128,38 +128,51 @@ public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInte
         this.textView.setText(totalCount + ""); /* 한줄이지만 빼내주는게 좋다.*/
     }
 
+    private void addDatas(Row[] items) {
+        for (Row item : items) {
+            toiletList.add(item.getGU_NM() + item.getHNR_NAM());
+        }
+    }
+
+    private void addMarkers(Row[] items){
+        for (Row item : items) {
+            MarkerOptions marker = new MarkerOptions();
+
+            LatLng tempCoord = new LatLng(Double.parseDouble(item.getLAT()), Double.parseDouble(item.getLNG()));
+            marker.position(tempCoord);
+            marker.title(item.getGU_NM() + item.getHNR_NAM());
+
+            googleMap.addMarker(marker);
+
+        }
+    }
+
+    private void movdCamera(LatLng latLng){
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+    }
+
+    /* 페이징 하는객체를 따로 분리하는 것.... */
+
     @Override
     public void postExecute(String jsonResult) {
 
         Data data = converJson(jsonResult);
 
-        // 전체 가져온 사이즈를 표시해준다.
-        int totalCount = data.getGeoInfoPublicToiletWGS().getList_total_count();
-        Row rows[] = data.getGeoInfoPublicToiletWGS().getRow();
+         /*Note : Gson에서 숫자값이 없으면 null이 반환되지 않는다. 숫자는 null이 없으므로,
+         * 따라서 모든 데이터를 String으로 가져오고 null 값일때 예외처리를 하는 방식이 좋다.
+          * Data를 int로 받지 말자...*/
+        int totalCount = Integer.parseInt(data.getGeoInfoPublicToiletWGS().getList_total_count());
+        Row items[] = data.getGeoInfoPublicToiletWGS().getRow();
 
 
+        setItemCount(totalCount);
 
+        addDatas(items);
+        addMarkers(items);
 
-        // Get Row....
-
-
-        for (Row row : rows) {
-            toiletList.add(row.getGU_NM() + row.getHNR_NAM());
-
-            MarkerOptions marker = new MarkerOptions();
-
-            LatLng tempCoord = new LatLng(Double.parseDouble(row.getLAT()), Double.parseDouble(row.getLNG()));
-            marker.position(tempCoord);
-            marker.title(row.getGU_NM() + row.getHNR_NAM());
-
-            googleMap.addMarker(marker);
-
-            googleMap.addMarker(marker);
-        }
-
-         /* Camera Move */
-        LatLng latLng = new LatLng(37.516066, 127.019361);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        /* Map Control */
+        LatLng sinsa = new LatLng(37.516066, 127.019361);
+        movdCamera(sinsa);
 
         /* notify to adapter*/
         adapter.notifyDataSetChanged();
