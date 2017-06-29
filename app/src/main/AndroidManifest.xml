@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <!-- Exteranl Storage Write Permission -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- Read 권한보다 Write권한이 상위에 있어서 Write만 있으면 Read는 사용하지 않아도 된다.-->
+    <!-- Read 권한보다 Write권한이 상위에 있어서 Write만 있으면 Read는 사용하지 않아도 된다. -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- 전화번호부 권한 -->
@@ -17,7 +17,7 @@
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
          Google Maps Android API v2, but you must specify either coarse or fine
-         location permissions for the 'MyLocation' functionality. 
+         location permissions for the 'MyLocation' functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -62,6 +62,9 @@
 
         <!-- camera permission -->
         <activity android:name=".week3.camerapermission.CameraActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
         <activity android:name=".week3.camerapermission.GalleryActivityMain">
             <intent-filter>
@@ -98,7 +101,7 @@
              Note that the API key is linked to the encryption key used to sign the APK.
              You need a different API key for each encryption key, including the release key that is used to
              sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/. 
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -161,7 +164,21 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week5.mvvm.MusicListActivity" />
+        <activity android:name=".week6.abstractoop.HttpClientActivityWrite" />
+        <activity android:name=".week6.uselibrary.ClientActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".week6.uselibrary.WriteActivity" />
+        <activity android:name=".week6.abstractoop.HttpClientActivityMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
     </application>

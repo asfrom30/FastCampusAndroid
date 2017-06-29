@@ -1,10 +1,8 @@
 package com.doyoon.android.fastcampusandroid.week5.musicplayer;
 
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,14 +22,16 @@ import java.util.Set;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
+import static com.doyoon.android.fastcampusandroid.week5.musicplayer.Player.playerStatus;
+
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
  * specified {@link OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
-    private Context context = null;
 
+    private Context context = null;
     private final OnListFragmentInteractionListener mListener;
 
     // 데이터 저장소
@@ -42,14 +42,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     /* 3번 방법 */
     private final List<Music.Item> musicList;
 
-    /* 현재 재생중인지, 퍼즈인지, 스탑인지 확인하는 역할을 하는 플래그를 만든다. */
-    public int playerStatus = STOP;
 
-    public static final int STOP = 0;
-    public static final int PLAY = 1;
-    public static final int PAUSE = 2;
 
-    public ListAdapter(Set<Music.Item> itemSet, OnListFragmentInteractionListener listener) {
+    public  ListAdapter(Set<Music.Item> itemSet, OnListFragmentInteractionListener listener) {
 
         /* set에서 데이터 꺼내기 */
         /* 1번 데이터 저장 방법 */
@@ -85,6 +80,8 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // 이렇게 담아서 사용하나 아니면 바로 호출하나 성능상의 차이가 별로 없다.
         // holder.mItem = musicList.get(position);
         holder.position = position;
+        holder.musicUri = musicList.get(position).getMusicUri();
+
         holder.mIdView.setText(musicList.get(position).getId());
         holder.mContentView.setText(musicList.get(position).getTitle());
 
@@ -114,11 +111,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener{
         /* 플레이어라는 객체로 분리를 해야 한다. */
         public int position;
+        public Uri musicUri;    /* TODO final을 지워줬나?? */
+
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
         public final ImageView imgAlbum;
         public final ImageButton btnPause;
+
 
         /* mvc를 위해서 삭제*/
         // public Music.Item mItem;
@@ -148,12 +148,12 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                 case R.id.btnPause:
                      /* 이제 플레이어의 상태를 체크할 수 있게 되었다. */
                     switch (playerStatus) {
-                        case PLAY:
-                            pause();
+                        case Player.PLAY:
+                            Player.pause();
                             btnPause.setImageResource(android.R.drawable.ic_media_play); /* 플레이가 되면서 버튼의 아이콘이 바뀐다. */
                             break;
-                        case PAUSE:
-                            replay();
+                        case Player.PAUSE:
+                            Player.replay();
                             btnPause.setImageResource(android.R.drawable.ic_media_pause);
                             break;
                     }
@@ -162,7 +162,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
                      /* Presenter로 치환할 수 있을것 같은데... */
                     // presenter.play(position);
                     // ListAdapter.this.play(position);
-                    play(position);
+                    Player.play(musicUri, mView.getContext());
                     btnPause.setImageResource(android.R.drawable.ic_media_pause);  /* 뷰를 세팅하는 것은 여기에 남겨둔다. */
                     setItemClicked(position);
                     break;
@@ -172,7 +172,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
         // 상세보기로 이동.
         @Override
         public boolean onLongClick(View v) {
-//            goDetail();
+            mListener.goDetailInteraction(position);
             return true;
             // return false; /* true 로 바꾸지 않으면 온클릭도 실행되어 버린다.*/
         }
@@ -180,47 +180,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ViewHolder> {
 
     /* presenter */
     public void goDetail(int position){
-
-    }
-
-    public MediaPlayer player = null;
-    public int position;
-
-
-
-    public void play(int position){
-        // 0. 기존에 재생되고 있는 플레이어가 있으면 중지한다.
-        if (player != null) {
-            player.release();
-        }
-
-        //1. 미디어 플레이어 사용하기
-        Uri musicUri = musicList.get(position).getMusicUri();
-        player = MediaPlayer.create(context, musicUri);
-
-        //2. 설정
-        player.setLooping(false); // 반복여부
-
-        //3. 시작
-        player.start();
-
-        playerStatus = PLAY;
-
-        Music.Item item = musicList.get(position);
-        Log.e("음악을 재생합니다.", "position : " + position + ", id : " + item.getId() );
-        Log.e("MUSIC URI", item.getMusicUri().toString());
-        Log.e("ALBUM URI", item.getAlbumArtUri().toString());
-    }
-
-    public void pause(){
-        player.pause();
-        playerStatus = PAUSE;
-    }
-
-    public void replay(){
-        /* 세팅은 다되어 있으니까 start만 호출해주면 된다. */
-        player.start();
-        playerStatus = PLAY;
+        mListener.goDetailInteraction(position);/* ListFragment를 거치지 않고 바로 Activity에 호출할 수 있다. */
     }
 
     /* 두가지 전략이 있을 수 있다.

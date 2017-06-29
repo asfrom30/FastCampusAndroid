@@ -9,9 +9,11 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 /**
- * Created by DOYOON on 6/15/2017.
+ * Created by DOYOON on 6/16/2017.
  */
-
+/*
+    Version : 0.1.0
+ */
 
 public class PermissionControl {
     private static final String TAG = PermissionControl.class.getName();
@@ -80,5 +82,5 @@ public class PermissionControl {
         public void run();
         public void cancle();
     }
-
 }
+

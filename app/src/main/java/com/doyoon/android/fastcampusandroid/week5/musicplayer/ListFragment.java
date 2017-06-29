@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 
 import com.doyoon.android.fastcampusandroid.R;
 import com.doyoon.android.fastcampusandroid.week5.musicplayer.domain.Music;
-import com.doyoon.android.fastcampusandroid.week5.musicplayer.dummy.DummyContent.DummyItem;
 
 /**
  * A fragment representing a list of Items.
@@ -26,7 +25,7 @@ public class ListFragment extends Fragment {
     private static final String ARG_COLUMN_COUNT = "column-count";
     // TODO: Customize parameters
     private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
+    private OnListFragmentInteractionListener mListener;    /* onAttach 함수 안에서 adapter에 listenr를 넘겨준다. */
 
     public ListFragment() {
     }
@@ -71,13 +70,14 @@ public class ListFragment extends Fragment {
 
             /* Set adpater */
             recyclerView.setAdapter(new ListAdapter(music.getItemSet(), mListener));
+
         }
         return view;
     }
 
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context) { /* Context는 다형성 실제로는 Acitivity 이다. */
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
             mListener = (OnListFragmentInteractionListener) context;
@@ -87,14 +87,16 @@ public class ListFragment extends Fragment {
         }
     }
 
+
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
+    /* Call back 함수.... 똑같은거네... */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void goDetailInteraction(int position);
     }
 }

@@ -39,7 +39,7 @@ public class Music {
         return itemSet;
     }
 
-    /* 독립적으로 설계, 어떤것도 이것을 가져다가 쓸 수 있게... */
+
     public void loader(Context context){
 
         ContentResolver resolver = context.getContentResolver();

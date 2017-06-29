@@ -49,7 +49,6 @@ public class HttpUrlConnectionMain extends AppCompatActivity implements TaskInte
     // 어댑터에서 사용할 공간
     final List<String> toiletList = new ArrayList<>();
 
-
     //
     boolean lastItemVisible = false;
 

@@ -7,16 +7,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.doyoon.android.fastcampusandroid.R;
 import com.doyoon.android.fastcampusandroid.util.PermissionControl;
-import com.doyoon.android.fastcampusandroid.util.PermissionUtil;
-import com.doyoon.android.fastcampusandroid.week5.musicplayer.dummy.DummyContent;
 
-public class MusicPlayerMain extends AppCompatActivity implements ListFragment.OnListFragmentInteractionListener, PermissionControl.Callback, PermissionUtil.CallBack {
+public class MusicPlayerMain extends AppCompatActivity implements ListFragment.OnListFragmentInteractionListener, PermissionControl.Callback{
     public static String TAG = MusicPlayerMain.class.getName();
     private FrameLayout layout;
 
@@ -27,21 +24,12 @@ public class MusicPlayerMain extends AppCompatActivity implements ListFragment.O
 
         String permissions[] = {Manifest.permission.READ_EXTERNAL_STORAGE};
         PermissionControl.requestAndRunOrNot(this, this, permissions);
-        //PermissionUtil.checkVersion(this);
-    }
-
-    @Override
-    public void init() {
-        this.setViews();
-        this.setFragment(ListFragment.newInstance(1));
-        Log.e("================", "init");
     }
 
     @Override
     public void run() {
         this.setViews();
         this.setFragment(ListFragment.newInstance(1));
-        Log.e("================", "run");
     }
 
     public void cancle(){
@@ -55,9 +43,10 @@ public class MusicPlayerMain extends AppCompatActivity implements ListFragment.O
         PermissionControl.postPermissionResult(this, requestCode, permissions, grantResults);
     }
 
+    /* 이 포지션 파라메터로 통신을 할 것이다. */
     @Override
-    public void onListFragmentInteraction(DummyContent.DummyItem item) {
-
+    public void goDetailInteraction(int position) {
+        addFragment(DetailFragment.newInstance(position));
     }
 
     private void setViews(){
@@ -71,5 +60,13 @@ public class MusicPlayerMain extends AppCompatActivity implements ListFragment.O
         transaction.commit();
     }
 
+    /* Fragment의 배경색을 하얗게 변경하자. */
+    private void addFragment(Fragment fragment){
+        FragmentManager manager = getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.add(R.id.music_frame_layout, fragment);
+        transaction.addToBackStack(null);    /*이름을 넣어주면 Stack을 찾을수 있다, Fragment는 스택에 쌓이지 않는데, 이 코드를 추가하면 Fragment도 Stack에 쌓여서 뒤로가기 버튼을 누르면 뒤로 간다. */
+        transaction.commit();
+    }
 
 }
